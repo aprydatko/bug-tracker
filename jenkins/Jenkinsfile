@@ -16,7 +16,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Unit Test - Frontend') {
             agent {
                 docker {
@@ -31,6 +31,10 @@ pipeline {
                         npm test
                     '''
                 }
+            }
+            post {
+                always {
+                    junit 'bugtracker-frontend/test-results.xml'
             }
         }
     }

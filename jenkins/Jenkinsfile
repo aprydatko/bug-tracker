@@ -3,6 +3,9 @@ pipeline {
 
     stages {
 
+        /* ============================
+           PARALLEL UNIT TESTS
+        ============================ */
         stage('Execute Unit Tests') {
             parallel {
 
@@ -66,9 +69,12 @@ pipeline {
                     }
                 }
 
-            } // end parallel
+            } // parallel
         }
 
+        /* ============================
+           START BACKEND + FRONTEND
+        ============================ */
         stage('Launch Application') {
             agent {
                 docker {
@@ -78,10 +84,16 @@ pipeline {
                 }
             }
             steps {
-                sh 'docker compose up --build -d'
+                sh '''
+                    export DOCKER_BUILDKIT=0
+                    docker compose up --build -d
+                '''
             }
         }
 
+        /* ============================
+           API TESTS (Playwright)
+        ============================ */
         stage('API Tests') {
             agent {
                 docker {
@@ -92,6 +104,8 @@ pipeline {
             }
             steps {
                 dir('tests-api') {
+
+                    // подождать пока backend поднимется
                     sh 'npx wait-port http://localhost:8080/api/health -t 30000'
 
                     sh 'npm ci'
@@ -110,7 +124,7 @@ pipeline {
             }
         }
 
-    } // end stages
+    } // stages
 
     post {
         always {

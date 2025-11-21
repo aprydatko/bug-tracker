@@ -163,11 +163,6 @@ pipeline {
                     sh 'k6 run script.js'
                 }
             }
-            post {
-                always {
-                    junit 'tests-performance/report.xml'
-                }
-            }
         }
 
     } // stages

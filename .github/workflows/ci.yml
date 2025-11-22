@@ -31,7 +31,8 @@ jobs:
         if: always()
         with:
           name: Backend Unit Tests Report
-          path: ./bugtracker-backend/test-results.xml
+          path: ./bugtracker-backend/report.xml
+          reporter: junit   # <-- REQUIRED FIX
 
   unit-tests-frontend:
     needs: unit-tests-backend
@@ -49,7 +50,8 @@ jobs:
       - name: Execute Frontend Unit Tests
         working-directory: ./bugtracker-frontend
         run: |
-          npm ci 
+          npm ci
+          # Make sure Jest generates test-results.xml
           npm test
 
       - name: Publish Frontend Test Results

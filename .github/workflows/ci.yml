@@ -61,7 +61,12 @@ jobs:
         run: |
           npm ci
           # Make sure Jest generates test-results.xml
-          npm test
+          npm test | tee full-output.txt
+
+          echo "## Frontend Tests Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat full-output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Publish Frontend Test Results
         uses: dorny/test-reporter@v1

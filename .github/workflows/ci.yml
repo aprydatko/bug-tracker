@@ -139,6 +139,14 @@ jobs:
       - name: Shut Down the Application
         run: docker compose down
 
+      - name: Publish API Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: ./tests-api/test-results/
+          retention-days: 30
+
       - name: Upload API Test Playwright Results
         if: always()
         uses: actions/upload-artifact@v4

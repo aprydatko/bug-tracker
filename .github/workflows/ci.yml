@@ -19,6 +19,6 @@ jobs:
           cache-dependency-path: bugtracker_backend/go.sum
           
       - name: Execute Backend Unit Tests
-        working-directory: ./bugtracker_backend
-        run |
+        working-directory: bugtracker_backend
+        run: |
           go test -v ./...

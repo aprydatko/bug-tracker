@@ -142,7 +142,7 @@ jobs:
           CI: "1"
         run: |
           npm install
-          npx playwright test
+          npx playwright install
           npx playwright test
 
       - name: Shut Down the Application
